@@ -1,0 +1,128 @@
+---
+title: "Final_Project_Script"
+author: "Hans Kristian Erik Bruun Mortensen"
+date: "2023-12-10"
+output: html_document
+---
+
+Starting with installing the necessary packages
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+Then i import my datasets into R
+
+```{r}
+China_Military_Personel <- read_csv2("Data_FP/China_Military_Personel.csv")
+USA_Military_Personel <- read_csv2("Data_FP/USA_Military_Personel.csv")
+China_MilitaryGDP <- read_csv2("Data_FP/China_MilitaryGDP.csv")
+USA_MilitaryGDP <- read_csv2("Data_FP/USA_MilitaryGDP.csv")
+China_Nuclear_Stockpile_Development <- read_csv2("Data_FP/China_Nuclear_Stockpile_Development.csv")
+China_Nuclear_Stockpile <- read_csv2("Data_FP/China_Nuclear_Stockpile.csv")
+USA_Nuclear_Stockpile <- read_csv2("Data_FP/USA_Nuclear_Stockpile.csv")
+USA_Nuclear_Stockpile_Development <- read_csv2("Data_FP/USA_Nuclear_Stockpile_Development.csv")
+Nations_With_Nuclear_Weapons <- read_csv2("Data_FP/Nations_With_Nuclear_Weapons.csv")
+
+```
+Now i want to inspect my data by using the str() function, so i can get an overview of how R reads my data
+
+```{r}
+str(China_Military_Personel)
+str(China_MilitaryGDP)
+str(USA_MilitaryGDP)
+str(China_Nuclear_Stockpile_Development)
+str(China_Nuclear_Stockpile)
+str(USA_Nuclear_Stockpile)
+str(USA_Nuclear_Stockpile_Development)
+```
+
+I can see that it reads my data correctly
+
+### my data 
+
+###Development in chinese and american military personal
+
+Now i going to plot my data with ggplot, starting with the development in chinese military personel since 1978 
+
+```{r}
+ggplot(data = China_Military_Personel)+
+  geom_line(mapping = aes(x = Year, y = Military_Personel))+
+  labs(title = "Chinese military personel", y = "Military personel", x = "year")
+```
+Next up i want to make vizualise the american military personel since 1978
+
+```{r}
+ggplot(data = USA_Military_Personel)+
+  geom_line(mapping = aes(x = Year, y = Military_Personel))+
+  labs(title = "USA military personel")
+  
+```
+###Development in chinese and american military expenditure as a share of GDP
+
+In the following section i am going to visualize the procentage of GDP spend on military by each nation.Starting with China
+
+```{r}
+ggplot(data = China_MilitaryGDP)+
+  geom_line(mapping = aes(x = Year, y = Percentages_of_GDP, color = "red"))+
+  labs(title = "China military expenses as a share of GDP since 1989", x = "Year", y = "Percentages of GDP")
+  
+
+```
+And then USA
+
+```{r}
+ggplot(data = USA_MilitaryGDP)+
+  geom_line(mapping = aes(x = Year, y = Percentages_of_GDP))+
+  labs(title = "USA military expenses as a share of GDP since 1989", x = "year", y = "Percentages of GDP")
+```
+
+To create a better visualization i am going to merge the two graphs.
+
+```{r}
+ggplot()+
+  geom_line(data = USA_MilitaryGDP, mapping = aes(x = Year, y = Percentages_of_GDP, color = "USA"))+
+  geom_line(data = China_MilitaryGDP, mapping = aes(x = Year, y = Percentages_of_GDP, color = "China"))+
+  labs(x = "year", y = "Percentages of GDP", title = "China and USA combined ")
+```
+
+
+
+
+
+
+
+###Chinese and american possesion of nuclear weapons
+
+In this section i want to showcase the development in the amount of nuclear weapons each nations has possessed since 1978. Starting with China.
+
+```{r}
+ggplot(data = China_Nuclear_Stockpile_Development)+
+  geom_col(mapping = aes(x =Year, y = China_Nuclear_Stockpile_Development$`Nuclear_weapons-stockpile`, color = "red"))+
+  labs( y = "Nuclear weapon stockpile", x = "Year", title ="Chinas inventory of Nuclear weapons since 1978")
+```
+
+And now the United States.
+
+```{r}
+ggplot(mapping = aes(x = USA_Nuclear_Stockpile_Development$Year, y = USA_Nuclear_Stockpile_Development$Nuclear_weapon_stockpile))+
+  geom_col(colour = "blue")+
+  labs(x = "Year", y = "Nuclear weapon stockpile", title = "USA nuclear stockpile development")
+
+
+  
+```
+
+
+#Chinese and american possesion of nuclear weapons compared to the rest of the nations in possesion of nuclear weapons.
+
+In this final section i am going to compare the 9 nations which possesses nuclear weapons.
+
+```{r}
+ggplot(data = Nations_With_Nuclear_Weapons)+
+  geom_col(mapping = aes(x = Nations_With_Nuclear_Weapons$Nation, y = Nations_With_Nuclear_Weapons$Nuclear_Weapon_Stocpile, colour = Nations_With_Nuclear_Weapons$Nation))+
+  labs(x = "Nation", y = "Nuclear weapon stockpile")
+```
+
+
